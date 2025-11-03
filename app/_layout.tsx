@@ -1,14 +1,15 @@
+import React from "react";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
+import { StatusBar } from "react-native";
 
 export default function RootLayout() {
   return (
     <>
+      <StatusBar barStyle="light-content" />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="placedetail" />
       </Stack>
-      <StatusBar style="auto" />
     </>
   );
 }

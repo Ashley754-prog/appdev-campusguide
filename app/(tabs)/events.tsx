@@ -1,54 +1,178 @@
-import React, { useState } from "react";
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from "react-native";
+import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+
+const MAROON = '#9a0101ff';
+
+type EventItem = {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  time?: string;
+  location: string;
+  tag?: string;
+};
+
+const EVENTS: EventItem[] = [
+  {
+    id: 'orientation',
+    title: 'Orientation Week',
+    description: 'Welcome event for new students with campus tours, club booths, and networking activities.',
+    date: 'September 07 - 17, 2025',
+    location: 'Main Campus Grounds',
+    tag: 'Social',
+  },
+  {
+    id: 'sportsday',
+    title: 'Palaro Wekk',
+    description: 'Annual campus sports competition featuring various sports and activities for all students.',
+    date: 'October 20-24, 2025',
+    time: '9:00 AM - 5:00 PM',
+    location: 'WMSU Campus and Grandstand',
+    tag: 'Sports',
+  },
+  {
+    id: 'science',
+    title: 'Science Exhibition',
+    description: 'Student research projects and innovative displays showcasing the latest scientific work.',
+    date: 'October 5, 2025',
+    time: '10:00 AM - 3:00 PM',
+    location: 'Science Building',
+    tag: 'Academic',
+  },
+  {
+    id: 'annualfest',
+    title: 'Alumni',
+    description: 'A celebration with cultural performances, music, food, and entertainment.',
+    date: 'December 03-07, 2025',
+    location: 'WMSU Campus',
+    tag: 'Social',
+  },
+  {
+    id: 'workshop',
+    title: 'Webinar for CCS students',
+    description: 'Industry expert workshop on modern digital marketing strategies and tools.',
+    date: 'September 28, 2025',
+    time: '2:00 PM - 4:00 PM',
+    location: 'Tech Lab, Building D',
+    tag: 'Workshop',
+  },
+];
 
 export default function EventsScreen() {
-  const [events, setEvents] = useState([
-    { id: "1", title: "Freshmen Orientation", date: "November 5, 2025" },
-    { id: "2", title: "Intramurals Opening", date: "November 10, 2025" },
-    { id: "3", title: "Research Forum", date: "November 18, 2025" },
-    { id: "4", title: "Campus Clean-Up Drive", date: "November 22, 2025" },
-  ]);
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Upcoming Events</Text>
+    <SafeAreaView style={styles.safe}>
+      <View style={styles.header}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image
+            source={require('@/assets/images/wmsu-logo.jpg')}
+            style={{ width: 26, height: 26, marginRight: 8 }}
+            resizeMode="contain"
+          />
+          <Text style={styles.headerTitle}>Campus Events</Text>
+        </View>
+      </View>
 
-      <FlatList
-        data={events}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity activeOpacity={0.8} style={styles.card}>
-            <Text style={styles.eventTitle}>{item.title}</Text>
-            <Text style={styles.eventDate}>{item.date}</Text>
-          </TouchableOpacity>
-        )}
-      />
-    </View>
+      <ScrollView contentContainerStyle={styles.container}>
+        {EVENTS.map((e) => (
+          <View key={e.id} style={styles.card}>
+            <View style={styles.cardHeader}>
+              <View style={styles.iconWrap}>
+                <MaterialCommunityIcons name="calendar-star" size={20} color="white" />
+              </View>
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>{e.tag}</Text>
+              </View>
+            </View>
+
+            <View style={{ padding: 12 }}>
+              <Text style={styles.title}>{e.title}</Text>
+              <Text style={styles.subtitle}>{e.description}</Text>
+
+              <View style={styles.metaRow}>
+                <Ionicons name="calendar-outline" size={16} color="#444" />
+                <Text style={styles.metaText}>{e.date}</Text>
+              </View>
+
+              {e.time ? (
+                <View style={styles.metaRow}>
+                  <Ionicons name="time-outline" size={16} color="#444" />
+                  <Text style={styles.metaText}>{e.time}</Text>
+                </View>
+              ) : null}
+
+              <View style={styles.metaRow}>
+                <Ionicons name="location-outline" size={16} color="#444" />
+                <Text style={styles.metaText}>{e.location}</Text>
+              </View>
+            </View>
+          </View>
+        ))}
+
+        <View style={{ height: 36 }} />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff", padding: 20 },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#800000",
-    textAlign: "center",
-    marginBottom: 16,
+  safe: { flex: 1, backgroundColor: '#fff' },
+  header: {
+    backgroundColor: MAROON,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
   },
+  headerTitle: { color: 'white', fontSize: 18, fontWeight: '700' },
+  container: { padding: 16 },
   card: {
-    backgroundColor: "#fdf2f2",
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: "#80000030",
-    shadowColor: "#800000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 3,
-    elevation: 2,
+    borderRadius: 12,
+    marginBottom: 18,
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    elevation: 3,
   },
-  eventTitle: { fontSize: 18, color: "#800000", fontWeight: "600" },
-  eventDate: { color: "#555" },
+  cardHeader: {
+    backgroundColor: MAROON,
+    padding: 12,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  iconWrap: {
+    width: 44,
+    height: 44,
+    borderRadius: 10,
+    backgroundColor: 'rgba(255,255,255,0.12)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  badge: {
+    backgroundColor: '#fff',
+    paddingHorizontal: 6,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#8A1C1C',
+    marginRight: 6,
+    marginTop: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 20,
+  },
+  badgeText: {
+    color: '#8A1C1C',
+    fontWeight: '700',
+    fontSize: 10,
+    lineHeight: 12,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
+  title: { fontSize: 18, fontWeight: '800', color: '#111' },
+  subtitle: { color: '#666', marginTop: 8 },
+  metaRow: { flexDirection: 'row', alignItems: 'center', marginTop: 12 },
+  metaText: { marginLeft: 8, color: '#444' },
 });
