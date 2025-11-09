@@ -1,14 +1,11 @@
-import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 
 const MAROON = '#9a0101ff';
 
 export default function AboutScreen() {
   return (
     <SafeAreaView style={styles.safe}>
-      {/* Header with logo + title (only change) */}
       <View style={styles.header}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image
@@ -21,11 +18,11 @@ export default function AboutScreen() {
       </View>
 
       <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.hero}>
-          <Ionicons name="school" size={44} color="white" />
-          <Text style={styles.heroTitle}>WMSU Campus Guide</Text>
-          <Text style={styles.heroSubtitle}>Your companion for navigating campus life</Text>
-        </View>
+        <Image
+          source={require('@/assets/images/about-hero.png')}
+          style={styles.heroImage}
+          resizeMode="cover"
+        />
 
         <View style={styles.card}>
           <Text style={styles.cardTitle}>About This App</Text>
@@ -93,15 +90,24 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 16,
   },
-  headerTitle: { color: 'white', fontSize: 18, fontWeight: '700' },
-  container: { padding: 16 },
-  hero: {
-    backgroundColor: MAROON,
-    borderRadius: 8,
-    alignItems: 'center',
-    paddingVertical: 28,
-    marginBottom: 16,
+
+  headerTitle: { 
+    color: 'white', fontSize: 18, fontWeight: '700' 
   },
+
+  container: {
+    paddingHorizontal: 0,
+  },
+
+  heroImage: {
+    paddingHorizontal: 0,
+    width: '100%',
+    height: 250,
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
+    marginBottom: 20,
+  },
+
   heroTitle: { color: 'white', fontSize: 22, fontWeight: '800', marginTop: 12 },
   heroSubtitle: { color: 'white', marginTop: 6 },
   card: {
@@ -114,6 +120,7 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 3,
   },
+  
   cardTitle: { fontWeight: '700', marginBottom: 8, color: '#222' },
   cardText: { color: '#555' },
   devName: { fontWeight: '700', color: '#222' },
@@ -122,6 +129,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 4,
     borderLeftColor: '#D9534F',
   },
+
   emRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 },
   emLabel: { color: '#333' },
   emNumber: { color: '#D9534F', fontWeight: '700' },
